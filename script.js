@@ -29,6 +29,7 @@ const clear = (Request) => {
     }
     screen.innerHTML = '';
     drawGrid(gridSize);
+    active()
 }
 
 let currentMode = 'black';
@@ -43,3 +44,48 @@ buttons.forEach(button => {
         }
     });
 });
+
+const randomColor = () => {
+    let color = 'rgba(';
+    for(i = 0; i < 3; i++){
+        color += Math.floor(Math.random() * 255) + ',';
+    }
+    return color + '1)';
+}
+
+const shading = (clr) => {
+    let color ='rgba(';
+    clr = parseInt(clr.substr(4,clr.indexof(',') - 4));
+    if(clr === 255){
+        clr = 100;
+    }
+else if(clr > 0){
+    clr -= 5;
+}
+for(i = 0; i < 3; i++){
+    color += clr + ',';
+}
+return color + '1)';
+}
+
+const active = () => {
+    let pixels = document.querySelectorAll('.pixel');
+    pixels.forEach(pxl => {
+        pxl.addEventListener('mouseover', (e) => {
+            let crntClr = getComputedStyle(pxl,null).getPropertyValue('background-color');
+            switch(currentMode){
+                case 'black':
+                    e.target.backgroundColor = 'rgba(0,0,0)';
+                    break;
+                    case 'colors':
+                        e.target.backgroundColor = randomColor();
+                        break;
+                    case 'shading':
+                        e.target.backgroundColor = shading(crntClr);
+                        break;
+            }
+        })
+    })
+}
+
+active();
