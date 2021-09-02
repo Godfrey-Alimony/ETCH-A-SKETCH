@@ -30,3 +30,16 @@ const clear = (Request) => {
     screen.innerHTML = '';
     drawGrid(gridSize);
 }
+
+let currentMode = 'black';
+buttons.forEach(button => {
+    button.addEventListener('click', () =>{
+        if(button.id === 'resize' || button.id === 'clear'){
+            clear(button.id);
+        }
+        else{
+            currentMode = button.id;
+            clear(button.id);
+        }
+    });
+});
